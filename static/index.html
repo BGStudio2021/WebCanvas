@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebCanvas</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <!-- 主工具栏 -->
+    <div class="toolbar-container toolbar-main" style="opacity: 0;">
+        <div class="toolbar">
+            <div class="toolbar-item btn-pen" onclick="setPenMode(1);"><img src="/static/icons/brush.svg"></div>
+            <div class="toolbar-item btn-eraser" onclick="setPenMode(0);"><img src="/static/icons/delete.svg"></div>
+            <div class="toolbar-item" onclick="openToolBar('.toolbar-color');"><img src="/static/icons/color_lens.svg">
+            </div>
+            <div class="toolbar-item" onclick="openToolBar('.toolbar-size');"><img
+                    src="/static/icons/radio_button_checked.svg"></div>
+            <div class="toolbar-item" onclick="openToolBar('.toolbar-alpha');"><img src="/static/icons/opacity.svg">
+            </div>
+            <div class="toolbar-item" onclick="input_insertImage.click();"><img src="/static/icons/insert_photo.svg">
+            </div>
+        </div>
+    </div>
+    <!-- 笔颜色工具栏 -->
+    <div class="toolbar-container toolbar-color">
+        <div class="toolbar">
+            <div class="toolbar-item" onclick="closeToolBar();"><img src="/static/icons/arrow_back.svg"></div>
+            <div class="toolbar-item btn-currentColor">
+                <div class="color-box" style="background-color: #fff;outline: 2px solid rgba(0, 0, 0, 0.75);"></div>
+            </div>
+            <div class="toolbar-item" onclick="setColor('#ffffff');">
+                <div class="color-box" style="background-color: #fff;"></div>
+            </div>
+            <div class="toolbar-item" onclick="setColor('#F44336');">
+                <div class="color-box" style="background-color: #F44336;"></div>
+            </div>
+            <div class="toolbar-item" onclick="setColor('#FFEB3B');">
+                <div class="color-box" style="background-color: #FFEB3B;"></div>
+            </div>
+            <div class="toolbar-item" onclick="setColor('#2196F3');">
+                <div class="color-box" style="background-color: #2196F3;"></div>
+            </div>
+            <div class="toolbar-item" onclick="setColor('#4CAF50');">
+                <div class="color-box" style="background-color: #4CAF50;"></div>
+            </div>
+            <div class="toolbar-item" onclick="setColor('#9C27B0');">
+                <div class="color-box" style="background-color: #9C27B0;"></div>
+            </div>
+            <div class="toolbar-item btn-autoColor" onclick="setColor('auto');"><img
+                    src="/static/icons/auto_awesome.svg"></div>
+            <div class="toolbar-item" onclick="input_color.click();"><img src="/static/icons/more_horiz.svg"></div>
+            <input type="color" style="opacity: 0;width: 0;height: 0;pointer-events: none;" class="input-color">
+        </div>
+    </div>
+    <!-- 笔大小工具栏 -->
+    <div class="toolbar-container toolbar-size">
+        <div class="toolbar">
+            <div class="toolbar-item" onclick="closeToolBar();"><img src="/static/icons/arrow_back.svg"></div>
+            <div class="toolbar-item" onclick="setSize(0.1);">
+                <div class="size-box" style="transform: scale(0.1);"></div>
+            </div>
+            <div class="toolbar-item" onclick="setSize(0.2);">
+                <div class="size-box" style="transform: scale(0.2);"></div>
+            </div>
+            <div class="toolbar-item toolbar-item-active" onclick="setSize(0.3);">
+                <div class="size-box" style="transform: scale(0.3);"></div>
+            </div>
+            <div class="toolbar-item" onclick="setSize(0.4);">
+                <div class="size-box" style="transform: scale(0.4);"></div>
+            </div>
+            <div class="toolbar-item" onclick="setSize(0.5);">
+                <div class="size-box" style="transform: scale(0.5);"></div>
+            </div>
+            <div class="toolbar-item" onclick="setSize(0.6);">
+                <div class="size-box" style="transform: scale(0.6);"></div>
+            </div>
+            <div class="toolbar-item" onclick="setSize(0.7);">
+                <div class="size-box" style="transform: scale(0.7);"></div>
+            </div>
+            <div class="toolbar-item" onclick="setSize(0.8);">
+                <div class="size-box" style="transform: scale(0.8);"></div>
+            </div>
+            <div class="toolbar-item" onclick="setSize(0.9);">
+                <div class="size-box" style="transform: scale(0.9);"></div>
+            </div>
+            <div class="toolbar-item" onclick="setSize(1);">
+                <div class="size-box" style="transform: scale(1);"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 笔透明度工具栏 -->
+    <div class="toolbar-container toolbar-alpha">
+        <div class="toolbar">
+            <div class="toolbar-item" onclick="closeToolBar();"><img src="/static/icons/arrow_back.svg"></div>
+            <div class="toolbar-item" onclick="setAlpha(0.1);">
+                <div class="alpha-box" style="opacity: 0.1;"></div>
+            </div>
+            <div class="toolbar-item" onclick="setAlpha(0.2);">
+                <div class="alpha-box" style="opacity: 0.2;" c></div>
+            </div>
+            <div class="toolbar-item" onclick="setAlpha(0.3);">
+                <div class="alpha-box" style="opacity: 0.3;"></div>
+            </div>
+            <div class="toolbar-item" onclick="setAlpha(0.4);">
+                <div class="alpha-box" style="opacity: 0.4;"></div>
+            </div>
+            <div class="toolbar-item" onclick="setAlpha(0.5);">
+                <div class="alpha-box" style="opacity: 0.5;"></div>
+            </div>
+            <div class="toolbar-item" onclick="setAlpha(0.6);">
+                <div class="alpha-box" style="opacity: 0.6;"></div>
+            </div>
+            <div class="toolbar-item" onclick="setAlpha(0.7);">
+                <div class="alpha-box" style="opacity: 0.7;"></div>
+            </div>
+            <div class="toolbar-item" onclick="setAlpha(0.8);">
+                <div class="alpha-box" style="opacity: 0.8;"></div>
+            </div>
+            <div class="toolbar-item" onclick="setAlpha(0.9);">
+                <div class="alpha-box" style="opacity: 0.9;"></div>
+            </div>
+            <div class="toolbar-item toolbar-item-active" onclick="setAlpha(1);">
+                <div class="alpha-box" style="opacity: 1;"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 左侧工具栏 -->
+    <div class="toolbar-container toolbar-LB" style="width: auto;left: 16px;opacity: 0;">
+        <div class="toolbar">
+            <div class="toolbar-item" onclick="toggleDialog('.dialog-about');"><img src="/static/icons/info.svg"></div>
+            <div class="toolbar-item" onclick="saveCanvas();"><img src="/static/icons/save.svg"></div>
+            <div class="toolbar-item" onclick="fullScreen();"><img src="/static/icons/fullscreen.svg"
+                    class="icon-fullScreen"></div>
+        </div>
+    </div>
+    <!-- 右侧工具栏（翻页器） -->
+    <div class="toolbar-container toolbar-RB" style="width: auto;left: auto;right: 16px;opacity: 0;">
+        <div class="toolbar">
+            <div class="toolbar-item" onclick="prevPage();"><img src="/static/icons/keyboard_arrow_left.svg"></div>
+            <div class="toolbar-item" style="width: 64px;border-radius: 64px;"
+                onclick="toggleDialog('.dialog-jumpToPage');">
+                <div class="page-number">1 / 1</div>
+            </div>
+            <div class="toolbar-item" onclick="nextPage();"><img src="/static/icons/add.svg" class="icon-nxtPg"></div>
+        </div>
+    </div>
+    <!-- 画布 -->
+    <canvas class="canvas"></canvas>
+    <!-- 画笔光标 -->
+    <div class="cursor"></div>
+    <!-- 对话框 -->
+    <div class="dialog dialog-jumpToPage" style="right: 16px;width: 192px;">
+        <div class="dialog-title">跳转到页面</div>
+        <div class="dialog-content" style="margin-top: 12px;">
+            <input type="number" class="input-pageNumber" placeholder="输入页码" style="width: calc(100% - 16px);">
+            <button style="width: 100%;margin-top: 12px;" onclick="jumpToPage();">跳转</button>
+        </div>
+    </div>
+    <div class="dialog dialog-about" style="left: 16px;">
+        <div class="dialog-title">关于 WebCanvas <br>
+            <div style="font-size: 16px;opacity: 0.5;">Version 1.0.0</div>
+        </div>
+        <div class="dialog-content">
+            <p style="margin-top: 12px;">这是一款基于 Canvas、Flask 和 WebSocket 的画板，可用于板书、绘画等，可在局域网内同步画面。</p>
+            <p>你可以在下方的悬浮工具栏中调整画笔的颜色、大小和透明度，并将绘制的内容保存到本地。</p>
+            <p>在画笔颜色工具栏中长按已选择的颜色，可将其填充为背景色。</p>
+            <a href="https://github.com/BGStudio2021/WebCanvas">在 GitHub 中查看源码</a>
+            <p style="margin-bottom: 4px;">Made by Burger Studio.</p>
+            <button style="margin-top: 12px;width: 100%;" onclick="toggleDialog('.dialog-about');">关闭</button>
+        </div>
+    </div>
+    <div class="dialog dialog-fillBg" style="left: calc(50% - 144px);">
+        <div class="dialog-title">填充背景色</div>
+        <div class="dialog-content">
+            <div>确定要将画布背景色设置为当前颜色吗？这将覆盖当前画布内容。</div>
+            <div style="float: right;margin-top: 12px;width: 100%;">
+                <button class="btn-text" style="width: calc(50% - 7px);"
+                    onclick="toggleDialog('.dialog-fillBg');">取消</button>
+                <button style="margin-left: 8px;width: calc(50% - 7px);" onclick="fillBg();">确定</button>
+            </div>
+        </div>
+    </div>
+    <script src="/static/socket.io.js"></script>
+    <script src="/static/script.js"></script>
+</body>
+
+</html>

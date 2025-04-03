@@ -1,0 +1,238 @@
+/* 全局无衬线字体 */
+* {
+    font-family: 'Arial', sans-serif;
+}
+
+/* 动画速度曲线 */
+:root {
+    --easeOutQuint: cubic-bezier(0.230, 1.000, 0.320, 1.000);
+}
+
+/* 页面主体 */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0f261e;
+    overflow: hidden;
+}
+
+/* 工具栏相关 */
+.toolbar-container {
+    position: absolute;
+    bottom: 16px;
+    left: 0;
+    width: 100%;
+    height: 48px;
+    border-radius: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.5s;
+    transition-timing-function: var(--easeOutQuint);
+    z-index: 10000;
+    pointer-events: none;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    background: rgba(240, 240, 240, 0.85);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    border-radius: 48px;
+    padding: 0 2px;
+    user-select: none;
+    pointer-events: auto;
+}
+
+.toolbar-main,
+.toolbar-LB,
+.toolbar-RB,
+.toolbar-color,
+.toolbar-size,
+.toolbar-alpha {
+    transform: translateY(72px);
+}
+
+/* 工具栏按钮 */
+.toolbar-item {
+    width: 40px;
+    height: 40px;
+    margin: 0 2px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.05s;
+}
+
+.toolbar-item:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-item:active {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.toolbar-item-active {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.toolbar-item-active:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.toolbar-item-active:active {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.toolbar-item img {
+    opacity: 0.8;
+}
+
+/* 工具栏特殊按钮 */
+.color-box {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.size-box,
+.alpha-box {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #000;
+}
+
+.btn-penMode-active {
+    background: #009688;
+}
+
+.btn-penMode-active img {
+    filter: invert(1);
+    opacity: 1;
+}
+
+.btn-penMode-active:hover {
+    background: #00897B;
+}
+
+.btn-penMode-active:active {
+    background: #00796B;
+}
+
+/* 画笔光标 */
+.cursor {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: none;
+    pointer-events: none;
+    transition: opacity 0.1s;
+}
+
+/* 画布 */
+.canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: none;
+    transform-origin: left top;
+}
+
+/* 对话框相关 */
+.dialog {
+    position: absolute;
+    bottom: 80px;
+    max-width: 256px;
+    padding: 16px;
+    border-radius: 16px;
+    background: rgba(240, 240, 240, 0.85);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    transform: translateY(16px);
+    opacity: 0;
+    pointer-events: none;
+    transition-duration: 0.3s;
+    transition-timing-function: var(--easeOutQuint);
+}
+
+.dialog-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dialog-title {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+/* 对话框内组件 */
+.dialog input {
+    border: none;
+    outline: 1.5px solid rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    border-radius: 4px;
+    transition: 0.05s;
+}
+
+.dialog input:focus {
+    outline: 1.5px solid #009688;
+}
+
+.dialog button {
+    padding: 8px 24px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    background: #009688;
+    color: #fff;
+    font-size: 16px;
+    transition: 0.05s;
+}
+
+.dialog button:hover {
+    background: #00897B;
+}
+
+.dialog button:active {
+    background: #00796B;
+}
+
+.dialog .btn-text {
+    background: rgba(0, 0, 0, 0.1);
+    color: #00796B;
+}
+
+.dialog .btn-text:hover {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.dialog .btn-text:active {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.dialog a {
+    color: #00796B;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.dialog a:hover {
+    color: #00695C;
+    text-decoration: underline;
+}
+
+.dialog a:active {
+    color: #005642;
+}
