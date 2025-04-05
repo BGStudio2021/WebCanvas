@@ -13,7 +13,7 @@
 配置文件为程序目录下的`config.ini`，内容如下：
 项目 | 说明
 ---- | ----
-| `[server] port` | 服务器端口 |
+| `[server] port` | 服务器端口号 |
 | `[canvas] width` | 画布宽度 |
 | `[canvas] height` | 画布高度 |
 ## 从历史记录恢复
