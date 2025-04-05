@@ -152,6 +152,8 @@ body {
     position: absolute;
     bottom: 80px;
     max-width: 256px;
+    max-height: calc(100% - 128px);
+    overflow: auto;
     padding: 16px;
     border-radius: 16px;
     background: rgba(240, 240, 240, 0.85);
@@ -235,4 +237,26 @@ body {
 
 .dialog a:active {
     color: #005642;
+}
+
+.msg-box {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translate(-50%, -16px);
+    font-size: 16px;
+    border-radius: 16px;
+    background: rgba(240, 240, 240, 0.85);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    padding: 8px 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition-duration: 0.3s;
+    transition-timing-function: var(--easeOutQuint);
+}
+
+.msg-box-open {
+    transform: translate(-50%, 0);
+    opacity: 1;
 }

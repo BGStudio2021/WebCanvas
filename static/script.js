@@ -46,6 +46,7 @@ var cursor = document.querySelector('.cursor');
 var icon_nxtPg = document.querySelector('.icon-nxtPg');
 var icon_fullScreen = document.querySelector('.icon-fullScreen');
 var input_pageNumber = document.querySelector('.input-pageNumber');
+var msg_box = document.querySelector('.msg-box');
 
 // UI 相关
 // 工具栏切换
@@ -106,7 +107,7 @@ function setColor(color) {
     }
     document.querySelectorAll('.color-box')[0].style.backgroundColor = color;
 }
-input_color.addEventListener('change', function () {
+input_color.addEventListener('input', function () {
     setColor(this.value);
 });
 // 设置笔透明度
@@ -239,6 +240,7 @@ function draw_(e) {
     is_drawing = false;
     canvasData[currentPage][0] = canvas.toDataURL();
     sendCanvasData();
+    saveState(false, true);
 }
 // 多页面
 var canvasData = [];
@@ -256,11 +258,12 @@ function nextPage() {
         ctx.fillStyle = "#0f261e";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         canvasData.push([canvas.toDataURL(), bgColor]);
+        saveState(true, true);
         currentPage++;
         document.querySelector('.page-number').textContent = currentPage + 1 + ' / ' + canvasData.length;
     }
 }
-function loadPage(page) {
+function loadPage(page, clearStack = true) {
     if (page >= 0 && page < canvasData.length) {
         currentPage = page;
         img_canvas.src = canvasData[currentPage][0];
@@ -268,6 +271,11 @@ function loadPage(page) {
         img_canvas.onload = function () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img_canvas, 0, 0);
+            if (clearStack) {
+                saveState(true, true);
+            } else {
+                saveState(false, false);
+            }
         }
         document.querySelector('.page-number').textContent = currentPage + 1 + ' / ' + canvasData.length;
         // 下一页 / 新建页面图标
@@ -334,6 +342,7 @@ function fillBg() {
     ctx.fillStyle = _color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     canvasData[currentPage] = [canvas.toDataURL(), _color];
+    saveState(false, true);
     toggleDialog('.dialog-fillBg');
     bgColor = _color;
     document.documentElement.style.backgroundColor = _color;
@@ -367,10 +376,90 @@ input_insertImage.addEventListener('change', function () {
             var _y = (canvas.height - _height) / 2;
             ctx.drawImage(img, _x, _y, _width, _height);
             canvasData[currentPage][0] = canvas.toDataURL();
+            saveState(false, true);
             sendCanvasData();
         }
     }
 });
+// 拖放导入图片
+canvas.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    msg_box.innerHTML = '释放鼠标即可导入图片';
+    msg_box.classList.add('msg-box-open');
+});
+canvas.addEventListener('drop', function (e) {
+    e.preventDefault();
+    msg_box.classList.remove('msg-box-open');
+    var file = e.dataTransfer.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+        var img = new Image();
+        img.src = reader.result;
+        img.onload = function () {
+            var _width = img.width;
+            var _height = img.height;
+            if (_width > canvas.width || _height > canvas.height) {
+                if (_width / _height > canvas.width / canvas.height) {
+                    _width = canvas.width;
+                    _height = _width / img.width * img.height;
+                } else {
+                    _height = canvas.height;
+                    _width = _height / img.height * img.width;
+                }
+            }
+            var _x = (canvas.width - _width) / 2;
+            var _y = (canvas.height - _height) / 2;
+            ctx.drawImage(img, _x, _y, _width, _height);
+            canvasData[currentPage][0] = canvas.toDataURL();
+            saveState(false, true);
+            sendCanvasData();
+        }
+    }
+});
+canvas.addEventListener('dragleave', function (e) {
+    e.preventDefault();
+    msg_box.classList.remove('msg-box-open');
+});
+// 撤销与重做
+var undoStack = [];
+var redoStack = [];
+function saveState(clearUndo = false, clearRedo = false) {
+    if (clearUndo) {
+        undoStack = [];
+    }
+    if (clearRedo) {
+        redoStack = [];
+    }
+    // 获取当前状态
+    const currentState = [canvas.toDataURL(), bgColor];
+    // 仅当状态变化时才入栈
+    if (undoStack.length === 0 ||
+        currentState[0] !== undoStack[undoStack.length - 1][0]) {
+        undoStack.push(currentState);
+    } else {
+        undoStack[undoStack.length - 1] = currentState;
+    }
+}
+function undo() {
+    if (undoStack.length > 1) {
+        canvasData[currentPage] = undoStack[undoStack.length - 2];
+        redoStack.push(undoStack.pop());
+        loadPage(currentPage, false);
+        bgColor = canvasData[currentPage][1];
+        sendCanvasData();
+    }
+}
+function redo() {
+    if (redoStack.length > 0) {
+        undoStack.push(redoStack.pop());
+        canvasData[currentPage] = undoStack[undoStack.length - 1];
+        loadPage(currentPage, false);
+        bgColor = canvasData[currentPage][1];
+        sendCanvasData();
+    }
+}
 
 // 颜色处理
 // Hex 转 RGB
@@ -431,7 +520,6 @@ function createRainbowChanger(initialColor, step = 1) {
 // 网络部分
 // 生成随机代号
 function generateCode() {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let code = '';
     for (let i = 0; i < 8; i++) {
@@ -452,10 +540,11 @@ var lastTimestamp = -1;
 var socket = io();
 socket.on('canvasData', function (data) {
     if (data.data.length == 0) {
+        saveState();
         sendCanvasData();
     } else if (data.client_code != client_code && data.timestamp > lastTimestamp) {
         canvasData = JSON.parse(data.data);
-        loadPage(currentPage);
+        loadPage(currentPage, false);
         lastTimestamp = data.timestamp;
     }
 });
