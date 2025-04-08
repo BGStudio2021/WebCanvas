@@ -22,6 +22,10 @@ window.onload = function () {
             // 多页面
             canvasData.push([canvas.toDataURL(), bgColor]);
         }(canvasSize))
+    // 阻止默认右键菜单
+    document.documentElement.oncontextmenu = function (e) {
+        e.preventDefault();
+    }
 }
 // 初始化画笔参数
 var pen_color = [255, 255, 255];
@@ -329,6 +333,9 @@ btn_currentColor.addEventListener('mousedown', listenLongPress);
 btn_currentColor.addEventListener('mouseup', stopLongPress);
 btn_currentColor.addEventListener('touchstart', listenLongPress);
 btn_currentColor.addEventListener('touchend', stopLongPress);
+btn_currentColor.oncontextmenu = function () {
+    toggleDialog('.dialog-fillBg');
+}
 function listenLongPress(e) {
     timer_longPress = setTimeout(() => {
         toggleDialog('.dialog-fillBg');

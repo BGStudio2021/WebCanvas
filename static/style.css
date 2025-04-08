@@ -164,6 +164,7 @@ body {
     pointer-events: none;
     transition-duration: 0.3s;
     transition-timing-function: var(--easeOutQuint);
+    user-select: none;
 }
 
 .dialog-open {
