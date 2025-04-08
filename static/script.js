@@ -334,12 +334,12 @@ btn_currentColor.addEventListener('mouseup', stopLongPress);
 btn_currentColor.addEventListener('touchstart', listenLongPress);
 btn_currentColor.addEventListener('touchend', stopLongPress);
 btn_currentColor.oncontextmenu = function () {
-    toggleDialog('.dialog-fillBg');
+    document.querySelector('.dialog-fillBg').classList.add('dialog-open');
 }
 function listenLongPress(e) {
     timer_longPress = setTimeout(() => {
-        toggleDialog('.dialog-fillBg');
-    }, 1000);
+        document.querySelector('.dialog-fillBg').classList.add('dialog-open');
+    }, 750);
 }
 function stopLongPress(e) {
     clearTimeout(timer_longPress);
