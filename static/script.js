@@ -32,6 +32,7 @@ var pen_color = [255, 255, 255];
 var pen_alpha = 1;
 var pen_size = 0.3;
 var pen_mode;
+var pen_tip = true;
 var bgColor = "#0f261e";
 // 获取元素
 var toolbar_main = document.querySelector('.toolbar-main');
@@ -43,6 +44,7 @@ var toolbar_size = document.querySelector('.toolbar-size');
 var btn_pen = document.querySelector('.btn-pen');
 var btn_eraser = document.querySelector('.btn-eraser');
 var btn_autoColor = document.querySelector('.btn-autoColor');
+var btn_penTip = document.querySelector('.btn-penTip');
 var btn_currentColor = document.querySelector('.btn-currentColor');
 var input_color = document.querySelector('.input-color');
 var canvas = document.querySelector('.canvas');
@@ -132,6 +134,15 @@ function setSize(size) {
     );
     document.querySelectorAll('.toolbar-size .toolbar-item')[Math.round(size * 10)].classList.add('toolbar-item-active');
 }
+// 切换笔锋
+function togglePenTip() {
+    btn_penTip.classList.toggle('btn-penMode-active');
+    if (btn_penTip.classList.contains('btn-penMode-active')) {
+        pen_tip = true;
+    } else {
+        pen_tip = false;
+    }
+}
 // 画笔光标
 canvas.addEventListener('touchstart', moveCursor);
 canvas.addEventListener('mousemove', moveCursor);
@@ -196,7 +207,12 @@ function _draw(e) {
     var _clientY = e.clientY / document.body.clientHeight * canvas.height;
     is_drawing = true;
     last_point = [_clientX, _clientY];
-    pen_size_adjusted = 0.1;
+    // 处理笔锋
+    if (pen_tip) {
+        pen_size_adjusted = 0.1;
+    } else {
+        pen_size_adjusted = pen_size;
+    }
     draw(e);
 }
 function draw(e) {

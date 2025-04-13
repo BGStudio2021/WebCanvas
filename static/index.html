@@ -92,6 +92,8 @@
             <div class="toolbar-item" onclick="setSize(1);">
                 <div class="size-box" style="transform: scale(1);"></div>
             </div>
+            <div class="toolbar-item btn-penTip btn-penMode-active" onclick="togglePenTip();"><img
+                    src="/static/icons/auto_awesome.svg"></div>
         </div>
     </div>
     <!-- 笔透明度工具栏 -->
@@ -164,11 +166,15 @@
     </div>
     <div class="dialog dialog-about" style="left: 16px;">
         <div class="dialog-title">关于 WebCanvas <br>
-            <div style="font-size: 16px;opacity: 0.5;">Version 1.0.2</div>
+            <div style="font-size: 16px;opacity: 0.5;">Version 1.0.3</div>
         </div>
         <div class="dialog-content">
             <p style="margin-top: 12px;">这是一款基于 Canvas、Flask 和 WebSocket 的画板，可用于板书、绘画等，可在局域网内同步画面。</p>
-            <p>▸画笔颜色、大小和透明度可在下方悬浮工具栏中调整。<br>▸点按<img src="/static/icons/auto_awesome.svg" style="vertical-align: middle;">图标切换到彩虹画笔。<br>▸长按画笔颜色工具栏中已选定的颜色，可将其填充为背景色。<br>▸拖放图片到页面上即可插入画布。</p>
+            <p>▸画笔颜色、大小和透明度可在下方悬浮工具栏中调整。<br>▸在画笔颜色工具栏中点按<img src="/static/icons/auto_awesome.svg"
+                    style="vertical-align: middle;">图标可切换到彩虹画笔（主动选择颜色可将其关闭）。<br>▸在画笔大小工具栏中点按<img
+                    src="/static/icons/auto_awesome.svg"
+                    style="vertical-align: middle;">图标可启用/禁用笔锋。<br>▸长按画笔颜色工具栏中已选定的颜色，可将其填充为背景色。<br>▸拖放图片到页面上即可插入画布。
+            </p>
             <a href="https://github.com/BGStudio2021/WebCanvas">在 GitHub 中查看源码</a>
             <p style="margin-bottom: 4px;">Made by Burger Studio.</p>
             <button style="margin-top: 12px;width: 100%;" onclick="toggleDialog('.dialog-about');">关闭</button>
@@ -186,7 +192,7 @@
         </div>
     </div>
     <!-- 消息 -->
-     <div class="msg-box"></div>
+    <div class="msg-box"></div>
     <script src="/static/socket.io.js"></script>
     <script src="/static/script.js"></script>
 </body>
